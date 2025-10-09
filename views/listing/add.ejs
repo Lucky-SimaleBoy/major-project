@@ -1,0 +1,64 @@
+<% layout('layouts/boilorPlate.ejs') %> 
+<body style="background: linear-gradient(135deg, #fdf6f0 0%, #e0e7ff 50%, #f5d0fe 100%); min-height: 100vh;">
+  <div class="container py-4 d-flex justify-content-center align-items-center" style="min-height: 60vh;">
+    <div class="card form-card shadow-lg border-0 p-0 animate__animated animate__fadeIn">
+      <div class="card-body p-3">
+        <h2 class="mb-4 text-center fw-bold" style="letter-spacing: 1px; color: #7c3aed;">Add New Listing</h2>
+        <form action="/listing" method="POST" autocomplete="off" class="needs-validation" novalidate enctype="multipart/form-data">
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control form-animate" id="title" name="listing[title]" placeholder="Title" required>
+            <label for="title">Title</label>
+            <div class="valid-feedback">
+              Looks good!
+            </div>
+          </div>
+          <div class="form-floating mb-3">
+            <textarea class="form-control form-animate" id="description" name="listing[description]" placeholder="Description" style="height: 100px;" required></textarea>
+            <label for="description">Description</label>
+            <div class="invalid-feedback">
+              Please give the description .
+            </div>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="file" class="form-control form-animate" id="image" name="listing[image]" required>
+            <label for="image">Image file</label>
+            <div class="invalid-feedback">
+              Please give the file.
+            </div>
+          </div>
+          <div class="row g-3 mb-3">
+            <div class="col-12 col-lg-6">
+              <div class="form-floating">
+                <input  class="form-control form-animate" id="price" name="listing[price]" placeholder="Price" type="number" required>
+                <label for="price">Price</label>
+                <div class="invalid-feedback">
+                  Enter the valid price 
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="form-floating">
+                <input type="text" class="form-control form-animate" id="location" name="listing[location]" placeholder="Location" required>
+                <label for="location">Location</label>
+                <div class="invalid-feedback">
+                  Give the location .
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-floating mb-4">
+            <input type="text" class="form-control form-animate" id="country" name="listing[country]" placeholder="Country" required>
+            <label for="country">Country</label>
+            <div class="invalid-feedback">
+              Give a valid country name.
+            </div>
+          </div>
+          <div class="d-grid">
+            <button type="submit" class="btn btn-lg shadow-sm custom-btn btn-animate">Add Listing</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+</body>

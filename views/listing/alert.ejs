@@ -1,0 +1,25 @@
+<% layout('layouts/boilorPlate.ejs') %> 
+<body style="background: linear-gradient(135deg, #fdf6f0 0%, #e0e7ff 50%, #f5d0fe 100%); min-height: 100vh;">
+  <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="alert animate__animated animate__fadeInDown d-flex align-items-center"
+         role="alert"
+         style="
+           max-width: 95vw;
+           width: 400px;
+           background: #e0f7fa;
+           color: #01579b;
+           font-size: 1.1rem;
+           font-weight: 600;
+           border-radius: 0.75rem;
+           box-shadow: 0 4px 16px 0 rgba(1, 87, 155, 0.10);
+           border-left: 6px solid #039be5;
+           padding: 1.2rem 1.5rem;
+           margin: 0;
+         ">
+      <i class="fas fa-info-circle me-3" style="color: #039be5; font-size: 1.7rem;"></i>
+      <span style="vertical-align: middle;">What went wrong: <%= message %></span>
+    </div>
+  </div>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+</body>

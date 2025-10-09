@@ -1,0 +1,65 @@
+<% layout('layouts/boilorPlate.ejs') %> 
+<body style="background: linear-gradient(135deg, #fdf6f0 0%, #e0e7ff 50%, #f5d0fe 100%); min-height: 100vh;">
+  <div class="container py-4 d-flex justify-content-center align-items-center" style="min-height: 60vh;">
+    <div class="card shadow-lg border-0 p-0 animate__animated animate__fadeIn" style="max-width: 700px; width: 100%; border-radius: 1.5rem; background: rgba(255,255,255,0.98);">
+      <div class="card-body p-3">
+        <h2 class="mb-4 text-center fw-bold" style="letter-spacing: 1px; color: #7c3aed;">Edit Listing</h2>
+        <form method="POST" action="/listing/<%=Listing._id%>?_method=PUT" autocomplete="off" class="needs-validation" novalidate>
+          <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" class="form-control form-animate" id="title" name="listing[title]" value="<%= Listing.title %>" required>
+            <div class="valid-feedback">
+              Looks good!
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control form-animate" id="description" name="listing[description]" rows="3" required><%= Listing.description %></textarea>
+            <div class="invalid-feedback">
+              Please give the description .
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="image" class="form-label">Image URL</label>
+            <% if (Listing.image && Listing.image.url) { %>
+              <div>
+                <img src="<%= Listing.image.url %>" alt="Current image" style="max-width: 200px; max-height: 120px; margin-bottom: 8px;">
+              </div>
+            <% } %>
+            <input type="text" class="form-control form-animate" id="image" name="listing[image]" value="<%= Listing.image && Listing.image.url ? Listing.image.url : '' %>">
+            <small class="form-text text-muted">Leave this field unchanged to keep the current image.</small>
+            
+          </div>
+          <div class="row g-3 mb-3">
+            <div class="col-12 col-lg-6">
+              <label for="price" class="form-label">Price</label>
+              <input type="number" class="form-control form-animate" id="price" name="listing[price]" value="<%= Listing.price %>" required>
+              <div class="invalid-feedback">
+                Enter the valid price 
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <label for="location" class="form-label">Location</label>
+              <input type="text" class="form-control form-animate" id="location" name="listing[location]" value="<%= Listing.location %>" required>
+              <div class="invalid-feedback">
+                Give the location .
+              </div>
+            </div>
+            
+          </div>
+          <div class="mb-4">
+            <label for="country" class="form-label">Country</label>
+            <input type="text" class="form-control form-animate" id="country" name="listing[country]" value="<%= Listing.country %>" required>
+            <div class="invalid-feedback">
+              Give a valid country name.
+            </div>
+          </div>
+          <div class="d-grid">
+            <button type="submit" class="btn btn-lg shadow-sm custom-btn btn-animate">Update</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+</body>
