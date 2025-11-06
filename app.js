@@ -29,6 +29,7 @@ app.use(express.urlencoded({extended:true}));//use to take data from form
 app.use(methodOverride('_method'));
 app.engine('ejs', ejsMate);
 app.use(express.static(path.join(__dirname,"public")));
+// const dbUrl='mongodb://127.0.0.1:27017/mydatabase';
 const dbUrl=process.env.ATLASDB_URL;//for connection to database
 //for static filee css or js we use code in other folder
 //router
@@ -67,7 +68,7 @@ passport.deserializeUser(User.deserializeUser());
   app.use((req,res,next)=>{
     res.locals.success=req.flash("success");
     res.locals.error=req.flash("error");
-    res.locals.currentUser=req.user;
+    res.locals.currentUser=req.user||null;
     next()
   })
   // app.get("/registerUser", async (req, res, next) => {
