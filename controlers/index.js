@@ -1,4 +1,5 @@
 const listing = require("../models/listing.js");
+const mongoose = require("mongoose");
 
 module.exports.index= async (req, res) => {
     const allListings = await listing.find({});
@@ -7,23 +8,36 @@ module.exports.index= async (req, res) => {
   module.exports.renderForm= (req, res) => {
     res.render("listing/add.ejs");
   }
-  module.exports.showListing=async (req, res) => {
+  module.exports.showListing=async (req, res, next) => {
     const { id } = req.params;
-    const Listing = await listing
-      .findById(id)
-      .populate({
-        path: "reviews",
-        populate: {
-          path: "author",
-        },
-      })
-      .populate("owner");
-    if (!Listing) {
-      req.flash("error", "Listing you requested does not exists");
+    
+    // Check if id is a valid MongoDB ObjectId
+    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+      req.flash("error", "Invalid listing ID");
+      return res.redirect("/listing");
+    }
+    
+    try {
+      const Listing = await listing
+        .findById(id)
+        .populate({
+          path: "reviews",
+          populate: {
+            path: "author",
+          },
+        })
+        .populate("owner");
+      
+      if (!Listing) {
+        req.flash("error", "Listing you requested does not exist");
+        return res.redirect("/listing");
+      }
+
+      res.render("listing/show.ejs", { Listing });
+    } catch (err) {
+      req.flash("error", "Error loading listing");
       res.redirect("/listing");
     }
-
-    res.render("listing/show.ejs", { Listing });
   };
   module.exports.addListing=async (req, res, next) => {
     let url = req.file.path;

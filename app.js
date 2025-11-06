@@ -84,6 +84,11 @@ passport.deserializeUser(User.deserializeUser());
   //   }
   // });
   
+  // Root route redirect
+  app.get("/", (req, res) => {
+    res.redirect("/listing");
+  });
+
 app.use("/listing",listingRouter);
 app.use("/listing/:id/reviews",reviewRouter);
 app.use("/",userRouter);
@@ -112,8 +117,9 @@ app.all("*", (req, res, next) => {
         let { statusCode = 500, message = "Something went wrong" } = err;
       res.status(statusCode).render("listing/alert.ejs",{message});
     });
-    app.listen(8080,()=>{
-        console.log("Server is running on port 8080");
+    const port = process.env.PORT || 8080;
+    app.listen(port,()=>{
+        console.log(`Server is running on port ${port}`);
     })
 
 
