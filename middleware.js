@@ -21,9 +21,13 @@ next();
 module.exports.isOwner= async(req,res,next)=>{
     const { id } = req.params;
     let Listing=await listing.findById(id);
+    if(!Listing){
+        req.flash("error","Listing not found");
+        return res.redirect("/listing");
+    }
     if(!Listing.owner.equals(res.locals.currentUser._id)){
         req.flash("error","You are not the owner if this so you can't edit");
-        res.redirect(`/listing/${id}`);
+        return res.redirect(`/listing/${id}`);
     }
     next();
 }

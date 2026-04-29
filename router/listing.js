@@ -40,6 +40,7 @@ router.get(
 //update the route
 router.put(
   "/:id",
+  isLoggedIn,
   validateListing,
   isOwner,
   wrapAsync(listingControlers.updateListing)

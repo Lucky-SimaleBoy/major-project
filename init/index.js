@@ -1,14 +1,28 @@
+if (process.env.NODE_ENV !== "production") {
+    require("dotenv").config();
+}
 const mongoose=require('mongoose');
 const listing=require('../models/listing.js');
 const initData=require('./data.js');
 const User = require('../models/user.js');
+const localDbUrl = process.env.LOCAL_DB_URL || "mongodb://127.0.0.1:27017/mydatabase";
+const atlasDbUrl = process.env.ATLASDB_URL;
 
 async function main(){
-    await mongoose.connect("mongodb://localhost:27017/mydatabase");
+    try {
+        await mongoose.connect(localDbUrl, { dbName: "mydatabase", serverSelectionTimeoutMS: 5000 });
+        console.log("connected to database (local)");
+        return;
+    } catch (localErr) {
+        if (!atlasDbUrl) throw localErr;
+    }
+
+    await mongoose.connect(atlasDbUrl, { dbName: "mydatabase", serverSelectionTimeoutMS: 5000 });
+    console.log("connected to database (atlas)");
   
 }
-main().then(()=>{
-    console.log("connected to database");
+main().then(async()=>{
+    await initDb();
 }).catch((err)=>{
     console.log(err);
 })
@@ -25,9 +39,9 @@ let initDb=async()=>{
     await listing.deleteMany({});
     initData.data = initData.data.map((obj) => ({
         ...obj,
-        owner: "68a19051aaadc087d5beae68",
+        owner: seedUser._id,
     }));
     await listing.insertMany(initData.data);
     console.log("data initialized");
+    await mongoose.connection.close();
 }
-initDb();

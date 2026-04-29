@@ -1,9 +1,44 @@
 const listing = require("../models/listing.js");
 const mongoose = require("mongoose");
+const initData = require("../init/data.js");
+
+const localListings = initData.data.map((item) => ({
+  ...item,
+  _id: new mongoose.Types.ObjectId(),
+  owner: {
+    username: "local-user",
+    equals: () => false,
+  },
+  reviews: [],
+}));
+
+async function isValidLocation(location, country) {
+  const query = [location, country].filter(Boolean).join(", ");
+  if (!query.trim()) return false;
+
+  const url = `https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q=${encodeURIComponent(query)}`;
+  const response = await fetch(url, {
+    headers: {
+      "User-Agent": "major-project-location-validator/1.0",
+    },
+    signal: AbortSignal.timeout(5000),
+  });
+
+  if (!response.ok) {
+    throw new Error("Location lookup failed");
+  }
+
+  const results = await response.json();
+  return Array.isArray(results) && results.length > 0;
+}
 
 module.exports.index= async (req, res) => {
-    const allListings = await listing.find({});
-    res.render("listing/index.ejs", { allListings });
+    try {
+      const allListings = await listing.find({});
+      return res.render("listing/index.ejs", { allListings });
+    } catch (err) {
+      return res.render("listing/index.ejs", { allListings: localListings });
+    }
   };
   module.exports.renderForm= (req, res) => {
     res.render("listing/add.ejs");
@@ -27,19 +62,34 @@ module.exports.index= async (req, res) => {
           },
         })
         .populate("owner");
-      
-      if (!Listing) {
-        req.flash("error", "Listing you requested does not exist");
-        return res.redirect("/listing");
-      }
 
-      res.render("listing/show.ejs", { Listing });
+      if (Listing) {
+        return res.render("listing/show.ejs", { Listing });
+      }
     } catch (err) {
-      req.flash("error", "Error loading listing");
-      res.redirect("/listing");
+      // fall back to local static data if DB is unavailable
     }
+
+    const localListing = localListings.find((item) => item._id.toString() === id);
+    if (localListing) {
+      return res.render("listing/show.ejs", { Listing: localListing });
+    }
+
+    req.flash("error", "Listing you requested does not exist");
+    return res.redirect("/listing");
   };
   module.exports.addListing=async (req, res, next) => {
+    const isLocationOk = await isValidLocation(req.body.listing.location, req.body.listing.country);
+    if (!isLocationOk) {
+      req.flash("error", "Please enter a valid location and country.");
+      return res.redirect("/listing/new");
+    }
+
+    if (!req.file) {
+      req.flash("error", "Please upload an image.");
+      return res.redirect("/listing/new");
+    }
+
     let url = req.file.path;
     let filename = req.file.filename;
     let newListing = new listing(req.body.listing);
@@ -61,7 +111,17 @@ module.exports.index= async (req, res) => {
   module.exports.updateListing=async (req, res, next) => {
     const { id } = req.params;
     const foundListing = await listing.findById(id);
+    if (!foundListing) {
+      req.flash("error", "Listing you requested does not exists");
+      return res.redirect("/listing");
+    }
     const updatedData = req.body.listing;
+
+    const isLocationOk = await isValidLocation(updatedData.location, updatedData.country);
+    if (!isLocationOk) {
+      req.flash("error", "Please enter a valid location and country.");
+      return res.redirect(`/listing/${id}/edit`);
+    }
 
     // Handle image field properly
     if (updatedData.image && updatedData.image.trim() !== "") {

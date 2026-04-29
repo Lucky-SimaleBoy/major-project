@@ -54,7 +54,7 @@
             </div>
           </div>
           <div class="d-grid">
-            <button type="submit" class="btn btn-lg shadow-sm custom-btn btn-animate">Add Listing</button>
+            <button type="submit" class="btn btn-lg shadow-sm custom-btn btn-animate" id="addListingBtn">Add Listing</button>
           </div>
         </form>
       </div>
@@ -62,3 +62,16 @@
   </div>
   
 </body>
+<script>
+  const addListingForm = document.querySelector('form[action="/listing"]');
+  const addListingBtn = document.getElementById("addListingBtn");
+
+  if (addListingForm && addListingBtn) {
+    addListingForm.addEventListener("submit", function () {
+      if (addListingForm.checkValidity()) {
+        addListingBtn.disabled = true;
+        addListingBtn.textContent = "Adding...";
+      }
+    });
+  }
+</script>

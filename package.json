@@ -9,7 +9,8 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "seed": "node init/index.js"
   },
   "dependencies": {
     "cloudinary": "^1.21.0",

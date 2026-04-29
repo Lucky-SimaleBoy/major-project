@@ -62,23 +62,39 @@
                 </div>
               </div>
               <div class="col-lg-6 col-md-6">
-                <div class="info-card location-card">
-                  <h6 class="info-label">
-                    <i class="fas fa-map-marker-alt me-1"></i>Location
-                  </h6>
-                  <h5 class="location-text"><%= Listing.location %></h5>
-                </div>
+                <a
+                  href="https://www.google.com/maps/search/?api=1&query=<%= encodeURIComponent(`${Listing.location}, ${Listing.country}`) %>"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-decoration-none text-reset d-block"
+                >
+                  <div class="info-card location-card">
+                    <h6 class="info-label">
+                      <i class="fas fa-map-marker-alt me-1"></i>Location
+                      <i class="fas fa-up-right-from-square ms-1" aria-hidden="true"></i>
+                    </h6>
+                    <h5 class="location-text"><%= Listing.location %></h5>
+                  </div>
+                </a>
               </div>
             </div>
 
             <!-- Country -->
             <div class="mb-2">
-              <div class="info-card country-card">
-                <h6 class="info-label">
-                  <i class="fas fa-globe me-1"></i>Country
-                </h6>
-                <h5 class="country-text"><%= Listing.country %></h5>
-              </div>
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=<%= encodeURIComponent(`${Listing.location}, ${Listing.country}`) %>"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-decoration-none text-reset d-block"
+              >
+                <div class="info-card country-card">
+                  <h6 class="info-label">
+                    <i class="fas fa-globe me-1"></i>Country
+                    <i class="fas fa-up-right-from-square ms-1" aria-hidden="true"></i>
+                  </h6>
+                  <h5 class="country-text"><%= Listing.country %></h5>
+                </div>
+              </a>
             </div>
 
             <!-- Action Buttons -->

@@ -5,11 +5,11 @@ const passport = require("passport");
 const wrapAsync = require("../middleware/wrapAsync.js");
 const { saveRedirectUrl } = require("../middleware.js");
 const listingControlers=require("../controlers/user.js")
-// Show signin form
+// Show signup form (support both /signin and /signup)
 router.get("/signin", listingControlers.signupform);
+router.get("/signup", listingControlers.signupform);
 // Handle signup form submission
 router.post("/signup", wrapAsync(listingControlers.signupFormSubmision));
-
 
 
 //login form
