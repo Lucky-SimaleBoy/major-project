@@ -240,7 +240,7 @@
 
 <!-- Payment Modal -->
 <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content payment-modal-content">
       <!-- Modal Header -->
       <div class="modal-header payment-modal-header">
@@ -264,103 +264,139 @@
           </div>
         </div>
 
-        <!-- Payment Form -->
-        <form id="paymentForm" class="payment-form needs-validation" novalidate>
-          <!-- Cardholder Name -->
-          <div class="mb-3">
-            <label for="cardholderName" class="form-label">Cardholder Name</label>
-            <input 
-              type="text" 
-              class="form-control" 
-              id="cardholderName" 
-              placeholder="John Doe"
-              required
-            />
-            <div class="invalid-feedback">Please provide a cardholder name.</div>
-          </div>
-
-          <!-- Email -->
-          <div class="mb-3">
-            <label for="paymentEmail" class="form-label">Email Address</label>
-            <input 
-              type="email" 
-              class="form-control" 
-              id="paymentEmail" 
-              placeholder="you@example.com"
-              required
-            />
-            <div class="invalid-feedback">Please provide a valid email.</div>
-          </div>
-
-          <!-- Card Number -->
-          <div class="mb-3">
-            <label for="cardNumber" class="form-label">Card Number</label>
-            <input 
-              type="text" 
-              class="form-control card-number-input" 
-              id="cardNumber" 
-              placeholder="1234 5678 9012 3456"
-              maxlength="19"
-              required
-            />
-            <div class="invalid-feedback">Please provide a valid card number.</div>
-          </div>
-
-          <!-- Expiry and CVV -->
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label for="expiryDate" class="form-label">Expiry Date</label>
-              <input 
-                type="text" 
-                class="form-control" 
-                id="expiryDate" 
-                placeholder="MM/YY"
-                maxlength="5"
-                required
-              />
-              <div class="invalid-feedback">Please provide expiry date (MM/YY).</div>
-            </div>
-            <div class="col-md-6 mb-3">
-              <label for="cvv" class="form-label">CVV</label>
-              <input 
-                type="text" 
-                class="form-control" 
-                id="cvv" 
-                placeholder="123"
-                maxlength="4"
-                required
-              />
-              <div class="invalid-feedback">Please provide a valid CVV.</div>
-            </div>
-          </div>
-
-          <!-- Billing Address -->
-          <div class="mb-3">
-            <label for="billingAddress" class="form-label">Billing Address</label>
-            <textarea 
-              class="form-control" 
-              id="billingAddress" 
-              rows="2"
-              placeholder="123 Main St, City, Country"
-              required
-            ></textarea>
-            <div class="invalid-feedback">Please provide a billing address.</div>
-          </div>
-
-          <!-- Terms Checkbox -->
-          <div class="form-check mb-4">
-            <input 
-              class="form-check-input" 
-              type="checkbox" 
-              id="termsCheckbox"
-              required
-            />
-            <label class="form-check-label" for="termsCheckbox">
-              I agree to the terms and conditions
+        <!-- Payment Method Selector -->
+        <div class="payment-method-selector mb-4">
+          <div class="btn-group w-100" role="group">
+            <input type="radio" class="btn-check" name="paymentMethod" id="upiMethod" value="upi" checked>
+            <label class="btn btn-outline-primary payment-method-btn" for="upiMethod">
+              <i class="fas fa-mobile-alt me-2"></i>UPI
             </label>
-            <div class="invalid-feedback">You must agree to the terms.</div>
+
+            <input type="radio" class="btn-check" name="paymentMethod" id="cardMethod" value="card">
+            <label class="btn btn-outline-primary payment-method-btn" for="cardMethod">
+              <i class="fas fa-credit-card me-2"></i>Card
+            </label>
           </div>
-        </form>
+        </div>
+
+        <!-- UPI Payment Section -->
+        <div id="upiSection" class="payment-section active">
+          <form id="upiForm" class="upi-form needs-validation" novalidate>
+            <!-- Name -->
+            <div class="mb-3">
+              <label for="upiName" class="form-label">Full Name</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="upiName" 
+                placeholder="John Doe"
+                required
+              />
+              <div class="invalid-feedback">Please provide your name.</div>
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+              <label for="upiEmail" class="form-label">Email Address</label>
+              <input 
+                type="email" 
+                class="form-control" 
+                id="upiEmail" 
+                placeholder="you@example.com"
+                required
+              />
+              <div class="invalid-feedback">Please provide a valid email.</div>
+            </div>
+
+            <!-- UPI ID -->
+            <div class="mb-3">
+              <label for="upiId" class="form-label">UPI ID</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="upiId" 
+                placeholder="yourname@upi"
+                required
+              />
+              <small class="form-text text-muted">e.g., name@phonepe, name@paytm, name@googlepay</small>
+              <div class="invalid-feedback">Please provide a valid UPI ID.</div>
+            </div>
+
+            <!-- Phone Number -->
+            <div class="mb-3">
+              <label for="upiPhone" class="form-label">Phone Number</label>
+              <input 
+                type="tel" 
+                class="form-control" 
+                id="upiPhone" 
+                placeholder="9876543210"
+                maxlength="10"
+                required
+              />
+              <div class="invalid-feedback">Please provide a valid 10-digit phone number.</div>
+            </div>
+
+            <!-- Terms Checkbox -->
+            <div class="form-check mb-3">
+              <input 
+                class="form-check-input" 
+                type="checkbox" 
+                id="upiTermsCheckbox"
+                required
+              />
+              <label class="form-check-label" for="upiTermsCheckbox">
+                I agree to the terms and conditions
+              </label>
+              <div class="invalid-feedback">You must agree to the terms.</div>
+            </div>
+          </form>
+        </div>
+
+        <!-- Payment Details Section -->
+        <div id="cardSection" class="payment-section" style="display: none;">
+          <!-- Payment Form -->
+          <form id="paymentForm" class="payment-form needs-validation" novalidate>
+            <!-- Customer Name -->
+            <div class="mb-3">
+              <label for="cardholderName" class="form-label">Customer Name</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="cardholderName" 
+                placeholder="John Doe"
+                required
+              />
+              <div class="invalid-feedback">Please provide your name.</div>
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+              <label for="paymentEmail" class="form-label">Email Address</label>
+              <input 
+                type="email" 
+                class="form-control" 
+                id="paymentEmail" 
+                placeholder="you@example.com"
+                required
+              />
+              <div class="invalid-feedback">Please provide a valid email.</div>
+            </div>
+
+            <!-- Terms Checkbox -->
+            <div class="form-check mb-4">
+              <input 
+                class="form-check-input" 
+                type="checkbox" 
+                id="termsCheckbox"
+                required
+              />
+              <label class="form-check-label" for="termsCheckbox">
+                I agree to the terms and conditions
+              </label>
+              <div class="invalid-feedback">You must agree to the terms.</div>
+            </div>
+          </form>
+        </div>
       </div>
 
       <!-- Modal Footer -->
@@ -374,6 +410,7 @@
   </div>
 </div>
 
+<script> const upiId = '<%= process.env.UPI_ID %>'; </script>
 <script src="/js/payment.js"></script>
 
 <style></style>

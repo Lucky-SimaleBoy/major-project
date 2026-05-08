@@ -1401,6 +1401,21 @@ footer .f-info-links a:hover::after { transform: scaleX(1); }
   font-size: 1.1rem;
 }
 
+/* Payment Error Alert */
+.payment-error-alert {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 2000;
+  min-width: 300px;
+  animation: slideInRight 0.4s ease-out;
+  box-shadow: 0 10px 30px rgba(239, 68, 68, 0.2);
+}
+
+.payment-error-alert strong {
+  font-size: 1.1rem;
+}
+
 /* Responsive Design */
 @media (max-width: 576px) {
   .payment-modal-content {
@@ -1420,9 +1435,22 @@ footer .f-info-links a:hover::after { transform: scaleX(1); }
     font-size: 0.95rem;
   }
   
-  .payment-success-alert {
+  .payment-success-alert,
+  .payment-error-alert {
     right: 10px;
     left: 10px;
     min-width: auto;
+  }
+
+  /* Modal sizing for smaller screens */
+  .modal-lg {
+    max-width: 90vw !important;
+  }
+}
+
+/* Large screen enhancements */
+@media (min-width: 1200px) {
+  .modal-lg {
+    max-width: 700px;
   }
 }

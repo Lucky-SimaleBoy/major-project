@@ -1,6 +1,6 @@
 const listing = require("../models/listing.js");
 const mongoose = require("mongoose");
-const initData = require("../init/data.js");
+const initData = require("./init/data.js");
 
 const localListings = initData.data.map((item) => ({
   ...item,
@@ -90,12 +90,12 @@ module.exports.index= async (req, res) => {
       return res.redirect("/listing/new");
     }
 
-    let url = req.file.path;
+    let url = `/uploads/${req.file.filename}`;
     let filename = req.file.filename;
     let newListing = new listing(req.body.listing);
     newListing.owner = req.user._id;
-    newListing.image={url,filename};
-    await newListing.save(); // Await the save operation
+    newListing.image = { url, filename };
+    await newListing.save();
     req.flash("success", "New listing created");
     res.redirect("/listing");
   }

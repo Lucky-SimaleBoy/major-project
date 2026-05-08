@@ -59,12 +59,22 @@ app.use((req,res,next)=>{
 
 //Database Connection
 async function connectDatabase(){
-    if (!atlasDbUrl) throw new Error("ATLASDB_URL is not set in .env");
-    await mongoose.connect(atlasDbUrl, {
-      dbName: "mydatabase",
-      serverSelectionTimeoutMS: 5000
-    });
-    console.log("✅ Connected to MongoDB Atlas!");
+    if (process.env.NODE_ENV != "production") {
+        const localDbUrl = process.env.LOCAL_DB_URL || "mongodb://127.0.0.1:27017/mydatabase";
+        if (!localDbUrl) throw new Error("LOCAL_DB_URL is not set in .env");
+        await mongoose.connect(localDbUrl, {
+          dbName: "mydatabase",
+          serverSelectionTimeoutMS: 5000
+        });
+        console.log("✅ Connected to local MongoDB!");
+    } else {
+        if (!atlasDbUrl) throw new Error("ATLASDB_URL is not set in .env");
+        await mongoose.connect(atlasDbUrl, {
+          dbName: "mydatabase",
+          serverSelectionTimeoutMS: 5000
+        });
+        console.log("✅ Connected to MongoDB Atlas!");
+    }
 }
 
 async function startServer() {
@@ -76,6 +86,7 @@ async function startServer() {
     const listingRouter=require('./router/listing.js');
     const reviewRouter=require('./router/review.js'); 
     const userRouter=require("./router/user.js");
+    const paymentRouter=require("./router/payment.js");
 
     // Root route redirect
     app.get("/", (req, res) => {
@@ -84,6 +95,7 @@ async function startServer() {
 
     app.use("/listing", listingRouter);
     app.use("/listing/:id/reviews", reviewRouter);
+    app.use("/payment", paymentRouter);
     app.use("/", userRouter);
 
     //Error Handling Routes
@@ -92,8 +104,9 @@ async function startServer() {
     });
 
     app.use((err, req, res, next) => {
+        console.error("Unhandled error:", err);
         let { statusCode = 500, message = "Something went wrong" } = err;
-        res.status(statusCode).render("listing/alert.ejs",{message});
+        res.status(statusCode).render("listing/alert.ejs", { message });
     });
 
     //Start Server
