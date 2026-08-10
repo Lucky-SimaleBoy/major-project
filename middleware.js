@@ -10,6 +10,19 @@ module.exports.isLoggedIn=(req,res,next)=>{
     }
     next();
 }
+
+module.exports.isAdmin=(req,res,next)=>{
+    if(!req.isAuthenticated()){
+        req.session.redirectUrl=req.originalUrl;
+        req.flash("error","You must be logged in to perform this action");
+        return res.redirect("/login");
+    }
+    if(req.user.role !== "admin"){
+        req.flash("error","Only hosts (admins) can access this page. Sign up as a host or use My Bookings.");
+        return res.redirect("/my-bookings");
+    }
+    next();
+}
 // login karne ke bad bhi page khule jo kholna chate hai hoti hai 
 module.exports.saveRedirectUrl=(req,res,next)=>{
     if(req.session.redirectUrl){

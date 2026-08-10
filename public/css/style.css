@@ -6,6 +6,7 @@ body {
     flex-direction: column;
     min-height: 100vh;
     background-attachment: fixed;
+    padding-top: 5rem;
 }
 .no-scrollbar::-webkit-scrollbar { display: none; }
 * { box-sizing: border-box; }
@@ -21,8 +22,13 @@ img, video, canvas, svg { max-width: 100%; height: auto; }
 }
 .navbar {
     height: 5rem;
-    position: fixed;
-    background-color: white;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    z-index: 1030 !important;
+    background-color: white !important;
 }
 .fa-solid {
     color: orangered;
@@ -104,10 +110,183 @@ img, video, canvas, svg { max-width: 100%; height: auto; }
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
 }
 
-/* --- Listing Card Custom Width --- */
-.custom-wide-card {
-    width: 50vw;
+.listing-status-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    border-radius: 999px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
 }
+
+.available-tag {
+    background: rgba(16, 185, 129, 0.12);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.booked-tag {
+    background: rgba(239, 68, 68, 0.12);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 999px;
+    padding: 0.55rem 0.9rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.booked-pill {
+    background: rgba(239, 68, 68, 0.12);
+    color: #ef4444;
+}
+
+.available-pill {
+    background: rgba(16, 185, 129, 0.12);
+    color: #10b981;
+}
+
+.dashboard-card {
+    background: linear-gradient(135deg, #eef2ff 0%, #ffffff 100%);
+    border: 1px solid rgba(99, 102, 241, 0.18);
+    border-radius: 1.5rem;
+    box-shadow: 0 18px 45px rgba(99, 102, 241, 0.08);
+}
+
+.dashboard-card-icon {
+    font-size: 2.5rem;
+    color: #6366f1;
+}
+
+.section-card {
+    background: white;
+    border-radius: 1.5rem;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 15px 35px rgba(15, 23, 42, 0.05);
+}
+
+.section-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.section-badge {
+    background: rgba(99, 102, 241, 0.1);
+    color: #4f46e5;
+    border-radius: 999px;
+    padding: 0.5rem 0.9rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.dashboard-page {
+    padding-bottom: 3rem;
+}
+
+.dashboard-header {
+    padding: 1.25rem 1.5rem;
+}
+
+.dashboard-title {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+}
+
+.dashboard-subtitle {
+    margin-bottom: 0;
+    color: #475569;
+}
+
+.dashboard-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.dashboard-listing-item,
+.booking-card {
+    background: #f8fafc;
+    border-radius: 1.25rem;
+    border: 1px solid #e2e8f0;
+    padding: 1rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.booking-card {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.booking-card.booked-card {
+    border-left: 4px solid #ef4444;
+}
+
+.booking-card.cancelled-card {
+    border-left: 4px solid #f59e0b;
+}
+
+.empty-state {
+    color: #475569;
+}
+
+.payment-modal-content {
+    border-radius: 1.5rem;
+}
+
+.payment-modal-header,
+.payment-modal-footer {
+    border: none;
+}
+
+.payment-summary .summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+}
+
+.payment-summary .summary-value {
+    font-weight: 700;
+}
+
+.payment-method-btn {
+    flex: 1;
+    border-radius: 1rem;
+}
+
+.payment-success-alert,
+.payment-error-alert {
+    position: fixed;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1080;
+    width: min(96%, 32rem);
+}
+
+@media (max-width: 768px) {
+    .custom-wide-card {
+        width: 100%;
+    }
+}
+
 
 /* --- Modern Signup Form Styles --- */
 .signup-card {

@@ -15,6 +15,7 @@ const User=require("./models/user.js");
 const passport=require("passport");
 const LocalStrategy=require("passport-local"); 
 const ExpressError=require("./middleware/expressError.js");
+const { buildMapsUrl } = require("./utils/maps.js");
 
 const atlasDbUrl = process.env.ATLASDB_URL;
 const sessionSecret = process.env.SESSION_SECRET || "mysesionIdxabcd";
@@ -23,6 +24,7 @@ const sessionSecret = process.env.SESSION_SECRET || "mysesionIdxabcd";
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views")); 
 app.use(express.urlencoded({extended:true}));
+app.use(express.json());
 app.use(methodOverride('_method'));
 app.engine('ejs', ejsMate);
 app.use(express.static(path.join(__dirname,"public")));
@@ -54,6 +56,9 @@ app.use((req,res,next)=>{
     res.locals.success=req.flash("success");
     res.locals.error=req.flash("error");
     res.locals.currentUser=req.user||null;
+    res.locals.isAdmin = req.user?.role === "admin";
+    res.locals.mapsUrl = buildMapsUrl;
+    res.locals.UPI_ID = process.env.UPI_ID || "";
     next()
 });
 

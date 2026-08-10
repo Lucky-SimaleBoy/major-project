@@ -6,9 +6,14 @@
   <div class="listing-grid row row-cols-lg-3 row-cols-md-2 row-cols-1 g-4 justify-content-center">
     <% for(let listing of allListings){ %>
       <a href="/listing/<%= listing._id %>" class="listing-links">
-        <div class="card listing-grid-card h-100 animate-listing-card">
+        <div class="card listing-grid-card h-100 animate-listing-card position-relative">
           <img src="<%= listing.image && listing.image.url ? listing.image.url : '' %>" class="card-img-top" style="height: 18rem; object-fit: cover;" alt="listing-img">
-          <div class="card-img-overlay"></div>
+          <div class="card-img-overlay">
+            <span class="listing-status-badge <%= listing.isBooked ? 'booked-tag' : 'available-tag' %>">
+              <i class="fas fa-circle me-1"></i>
+              <%= listing.isBooked ? 'Booked' : 'Available' %>
+            </span>
+          </div>
           <div class="card-body d-flex flex-column justify-content-end">
             <p class="card-text mb-0">
               <b><%= listing.title %></b>

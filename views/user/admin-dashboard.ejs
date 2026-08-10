@@ -1,0 +1,118 @@
+<% layout('layouts/boilorPlate.ejs') %>
+<div class="dashboard-page py-4">
+  <div class="dashboard-header mb-4">
+    <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
+      <div>
+        <h1 class="dashboard-title mb-1">Host Dashboard</h1>
+        <p class="dashboard-subtitle text-muted">Manage your listings and see who booked your rooms.</p>
+      </div>
+      <a href="/listing/new" class="btn btn-primary dashboard-action-btn">
+        <i class="fas fa-plus-circle me-2"></i> Add New Listing
+      </a>
+    </div>
+  </div>
+
+  <div class="row g-4 mb-5">
+    <div class="col-md-4">
+      <div class="dashboard-card p-4 text-center">
+        <div class="dashboard-card-icon mb-3"><i class="fas fa-hotel"></i></div>
+        <h3><%= totalListings %></h3>
+        <p class="mb-0">Your listings</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="dashboard-card p-4 text-center">
+        <div class="dashboard-card-icon mb-3"><i class="fas fa-circle-check"></i></div>
+        <h3><%= bookedListings %></h3>
+        <p class="mb-0">Rooms booked</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="dashboard-card p-4 text-center">
+        <div class="dashboard-card-icon mb-3"><i class="fas fa-users"></i></div>
+        <h3><%= guestBookings.length %></h3>
+        <p class="mb-0">Guest reservations</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-12 col-xl-6">
+      <div class="section-card p-4">
+        <div class="section-card-header mb-3 d-flex align-items-center justify-content-between">
+          <h2 class="section-title mb-0">Your Listings</h2>
+          <span class="section-badge"><%= totalListings %></span>
+        </div>
+        <% if (myListings.length === 0) { %>
+          <div class="empty-state text-center py-5">
+            <i class="fas fa-bed fa-2x mb-3"></i>
+            <p class="mb-3">No listings yet. Add your first room to start receiving bookings.</p>
+            <a href="/listing/new" class="btn btn-primary">Add Listing</a>
+          </div>
+        <% } else { %>
+          <div class="list-group dashboard-listing-list">
+            <% myListings.forEach(listing => { %>
+              <div class="dashboard-listing-item <%= listing.isBooked ? 'booked' : 'available' %>">
+                <div>
+                  <h5 class="mb-1"><%= listing.title %></h5>
+                  <p class="text-muted mb-1"><%= listing.location %>, <%= listing.country %></p>
+                  <p class="mb-0"><strong>₹<%= listing.price?.toLocaleString('en-in') %></strong></p>
+                </div>
+                <div class="d-flex flex-column gap-2 align-items-end">
+                  <span class="status-pill <%= listing.isBooked ? 'booked-pill' : 'available-pill' %>">
+                    <%= listing.isBooked ? 'Booked' : 'Available' %>
+                  </span>
+                  <a href="/listing/<%= listing._id %>" class="btn btn-sm btn-outline-primary">View</a>
+                </div>
+              </div>
+            <% }) %>
+          </div>
+        <% } %>
+      </div>
+    </div>
+
+    <div class="col-12 col-xl-6">
+      <div class="section-card p-4">
+        <div class="section-card-header mb-3 d-flex align-items-center justify-content-between">
+          <h2 class="section-title mb-0">Bookings on Your Rooms</h2>
+          <span class="section-badge"><%= guestBookings.length %></span>
+        </div>
+        <% if (guestBookings.length === 0) { %>
+          <div class="empty-state text-center py-5">
+            <i class="fas fa-calendar-alt fa-2x mb-3"></i>
+            <p class="mb-0">No guest bookings yet. When someone books your room, details appear here.</p>
+          </div>
+        <% } else { %>
+          <div class="booking-list">
+            <% guestBookings.forEach(booking => { %>
+              <div class="booking-card booked-card mb-3">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                  <div>
+                    <h5 class="mb-1"><%= booking.listing?.title || 'Listing' %></h5>
+                    <p class="text-muted mb-0 small">
+                      Guest: <strong><%= booking.customerName || booking.user?.username %></strong>
+                      · <%= booking.customerEmail || booking.user?.email %>
+                    </p>
+                  </div>
+                  <span class="status-pill booked-pill">Booked</span>
+                </div>
+                <ul class="list-unstyled small text-muted mb-2">
+                  <li>Check-in: <%= new Date(booking.checkIn).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) %></li>
+                  <li>Check-out: <%= new Date(booking.checkOut).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) %></li>
+                  <li><%= booking.nights %> night(s) · <%= booking.adults %> adult(s)<% if (booking.children > 0) { %>, <%= booking.children %> child(ren)<% } %></li>
+                  <% if (booking.customerPhone) { %>
+                    <li>Phone: <%= booking.customerPhone %></li>
+                  <% } %>
+                </ul>
+                <div class="d-flex justify-content-between">
+                  <strong class="text-success">₹<%= booking.amount?.toLocaleString('en-in') %></strong>
+                  <small class="text-muted"><%= booking.transactionId || booking.paymentId %></small>
+                </div>
+              </div>
+            <% }) %>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -7,8 +7,11 @@ module.exports.schemalisting = Joi.object({
         description: Joi.string().required(),
         image: Joi.string().allow("", null),
         price: Joi.number().required().min(0),
+        address: Joi.string().required(),
         location: Joi.string().required(),
-        country: Joi.string().required()
+        country: Joi.string().required(),
+        latitude: Joi.number().optional(),
+        longitude: Joi.number().optional()
     }).required()
 });
 module.exports.reviewSchema = Joi.object({

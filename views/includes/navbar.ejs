@@ -1,4 +1,5 @@
 <% const user = typeof currentUser !== "undefined" ? currentUser : null; %>
+<% const host = typeof isAdmin !== "undefined" && isAdmin; %>
 <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary sticky-top ">
     <div class="container-fluid">
       <a class="navbar-brand" href="/listing"><i class="fa-solid fa-compass"></i></a>
@@ -8,18 +9,24 @@
       
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-      
           <a class="nav-link" href="/listing">Explore</a>
-        
-        </div>
-        <div class="navbar-nav ms-auto">
-          <a class="nav-link" href="/listing/new">Add new Listing</a>
-          <% if(!user){ %>
-          <a class="nav-link active" aria-current="page" href="/signin"><b>Sign In</b></a>
-          <a class="nav-link" href="/login"><b>Login</b></a>
-          <% } %>
           <% if(user){ %>
-          <a class="nav-link" href="/logout"><b>Log out</b></a>
+            <a class="nav-link" href="/my-bookings">My Bookings</a>
+            <% if(host){ %>
+              <a class="nav-link" href="/dashboard">Host Dashboard</a>
+            <% } %>
+          <% } %>
+        </div>
+        <div class="navbar-nav ms-auto align-items-center">
+          <% if(user){ %>
+            <% if(host){ %>
+              <a class="nav-link" href="/listing/new">Add Listing</a>
+            <% } %>
+            <span class="nav-link disabled">Hi, <%= user.username %><% if(host){ %> <span class="badge bg-primary ms-1">Host</span><% } %></span>
+            <a class="nav-link" href="/logout"><b>Log out</b></a>
+          <% } else { %>
+            <a class="nav-link active" aria-current="page" href="/signin"><b>Sign In</b></a>
+            <a class="nav-link" href="/login"><b>Login</b></a>
           <% } %>
         </div>
       </div>

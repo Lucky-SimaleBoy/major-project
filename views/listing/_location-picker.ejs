@@ -1,0 +1,81 @@
+<% const mapLat = typeof mapInitialLat !== 'undefined' ? mapInitialLat : ''; %>
+<% const mapLng = typeof mapInitialLng !== 'undefined' ? mapInitialLng : ''; %>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+<link rel="stylesheet" href="/css/listing-map.css" />
+
+<div class="location-picker-section mb-4">
+  <label class="form-label fw-semibold">
+    <i class="fas fa-map-marked-alt me-1"></i> Hotel location
+  </label>
+  <p class="form-text mb-2">
+  Click the map to drop a pin <strong>or</strong> type the address below and press <strong>Find on map</strong>.
+  </p>
+
+  <div
+    id="listingMapPicker"
+    data-lat="<%= mapLat %>"
+    data-lng="<%= mapLng %>"
+    data-default-lat="20.5937"
+    data-default-lng="78.9629"
+  >
+    <div id="listingMap" class="listing-map" role="application" aria-label="Select hotel location on map"></div>
+    <p id="mapPickerStatus" class="small mt-2 map-picker-status text-muted">
+      Click on the map to select where the hotel is located.
+    </p>
+  </div>
+
+  <input type="hidden" id="listingLatitude" name="listing[latitude]" value="<%= mapLat %>" />
+  <input type="hidden" id="listingLongitude" name="listing[longitude]" value="<%= mapLng %>" />
+
+  <div class="mt-3">
+    <label for="address" class="form-label">Full address</label>
+    <div class="input-group mb-2">
+      <input
+        type="text"
+        class="form-control"
+        id="address"
+        name="listing[address]"
+        placeholder="Street, building, area, PIN code"
+        value="<%= typeof addressValue !== 'undefined' ? addressValue : '' %>"
+        required
+      />
+      <button type="button" class="btn btn-outline-primary" id="mapSearchBtn">
+        <i class="fas fa-search-location me-1"></i> Find on map
+      </button>
+    </div>
+    <div class="invalid-feedback">Enter the full address or pick a point on the map.</div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-md-6">
+      <label for="location" class="form-label">City / area</label>
+      <input
+        type="text"
+        class="form-control"
+        id="location"
+        name="listing[location]"
+        placeholder="e.g. Mumbai"
+        value="<%= typeof cityValue !== 'undefined' ? cityValue : '' %>"
+        required
+      />
+      <div class="invalid-feedback">Enter city or area.</div>
+    </div>
+    <div class="col-md-6">
+      <label for="country" class="form-label">Country</label>
+      <input
+        type="text"
+        class="form-control"
+        id="country"
+        name="listing[country]"
+        placeholder="e.g. India"
+        value="<%= typeof countryValue !== 'undefined' ? countryValue : '' %>"
+        required
+      />
+      <div class="invalid-feedback">Enter country.</div>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="/js/listing-map-picker.js"></script>

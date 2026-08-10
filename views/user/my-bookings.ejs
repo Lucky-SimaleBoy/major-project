@@ -1,0 +1,88 @@
+<% layout('layouts/boilorPlate.ejs') %>
+<div class="dashboard-page py-4">
+  <div class="dashboard-header mb-4">
+    <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
+      <div>
+        <h1 class="dashboard-title mb-1">My Bookings</h1>
+        <p class="dashboard-subtitle text-muted">Rooms you have booked for your stay.</p>
+      </div>
+      <a href="/listing" class="btn btn-primary dashboard-action-btn">
+        <i class="fas fa-search me-2"></i> Find a Room
+      </a>
+    </div>
+  </div>
+
+  <div class="row g-4 mb-4">
+    <div class="col-md-6 col-lg-4">
+      <div class="dashboard-card p-4 text-center">
+        <div class="dashboard-card-icon mb-3"><i class="fas fa-calendar-check"></i></div>
+        <h3><%= myBookings.length %></h3>
+        <p class="mb-0">Total bookings</p>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-4">
+      <div class="dashboard-card p-4 text-center">
+        <div class="dashboard-card-icon mb-3"><i class="fas fa-bed"></i></div>
+        <h3><%= myBookings.filter(b => b.status === 'booked').length %></h3>
+        <p class="mb-0">Active stays</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card p-4" id="your-reservations">
+    <div class="section-card-header mb-3 d-flex align-items-center justify-content-between">
+      <h2 class="section-title mb-0">Your Reservations</h2>
+      <span class="section-badge"><%= myBookings.length %></span>
+    </div>
+    <% if (myBookings.length === 0) { %>
+      <div class="empty-state text-center py-5">
+        <i class="fas fa-calendar-alt fa-2x mb-3"></i>
+        <p class="mb-3">You have not booked any room yet.</p>
+        <a href="/listing" class="btn btn-primary">Browse rooms</a>
+      </div>
+    <% } else { %>
+      <div class="booking-list">
+        <% myBookings.forEach(booking => { %>
+          <div class="booking-card <%= booking.status === 'booked' ? 'booked-card' : 'cancelled-card' %> mb-3">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <div>
+                <h5 class="mb-1"><%= booking.listing?.title || 'Listing removed' %></h5>
+                <p class="text-muted mb-0"><%= booking.listing?.location %>, <%= booking.listing?.country %></p>
+              </div>
+              <span class="status-pill <%= booking.status === 'booked' ? 'booked-pill' : 'cancelled-pill' %>">
+                <%= booking.status === 'booked' ? 'Booked' : booking.status %>
+              </span>
+            </div>
+            <ul class="list-unstyled small text-muted mb-2">
+              <li><i class="fas fa-calendar-day me-1"></i> Check-in: <%= new Date(booking.checkIn).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) %></li>
+              <li><i class="fas fa-calendar-day me-1"></i> Check-out: <%= new Date(booking.checkOut).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) %></li>
+              <li><i class="fas fa-moon me-1"></i> <%= booking.nights %> night(s) · <%= booking.rooms %> room(s) · <%= booking.adults %> adult(s)<% if (booking.children > 0) { %>, <%= booking.children %> child(ren)<% } %></li>
+              <% if (booking.customerPhone) { %>
+                <li><i class="fas fa-phone me-1"></i> <%= booking.customerPhone %></li>
+              <% } %>
+            </ul>
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+              <strong class="text-success">₹<%= booking.amount?.toLocaleString('en-in') %></strong>
+              <small class="text-muted">Receipt: <%= booking.transactionId || booking.paymentId %></small>
+            </div>
+            <% if (booking.listing?._id) { %>
+              <a href="/listing/<%= booking.listing._id %>" class="btn btn-sm btn-outline-primary mt-2">
+                <i class="fas fa-eye me-1"></i>View room
+              </a>
+            <% } %>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<% if (myBookings.length > 0) { %>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.location.hash === "#your-reservations") {
+      document.getElementById("your-reservations")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  });
+</script>
+<% } %>

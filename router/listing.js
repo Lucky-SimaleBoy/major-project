@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const wrapAsync = require("../middleware/wrapAsync.js");
 const listing = require("../models/listing.js");
-const { isLoggedIn, isOwner, validateListing } = require("../middleware.js");
+const { isLoggedIn, isAdmin, isOwner, validateListing } = require("../middleware.js");
 const user = require("../models/user.js");
 const  listingControlers=require("../controlers/index.js")
 const multer  = require('multer')
@@ -15,7 +15,7 @@ router.get(
 );
 
 //create new listing
-router.get("/new", isLoggedIn,listingControlers.renderForm);
+router.get("/new", isAdmin, listingControlers.renderForm);
 
 //show route
 router.get(
@@ -24,8 +24,9 @@ router.get(
 );
 // add listing
 router.post(
-  "/",isLoggedIn,
-upload.single('listing[image]'),
+  "/",
+  isAdmin,
+  upload.single('listing[image]'),
   validateListing,
   wrapAsync(listingControlers.addListing)
 );
