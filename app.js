@@ -18,7 +18,7 @@ const ExpressError=require("./middleware/expressError.js");
 const { buildMapsUrl } = require("./utils/maps.js");
 
 const atlasDbUrl = process.env.ATLASDB_URL;
-const sessionSecret = process.env.SESSION_SECRET || "mysesionIdxabcd";
+const sessionSecret = process.env.SESSION_SECRET ;
 
 //App Configuration
 app.set("view engine","ejs");
@@ -71,7 +71,7 @@ async function connectDatabase(){
           dbName: "mydatabase",
           serverSelectionTimeoutMS: 5000
         });
-        console.log("✅ Connected to local MongoDB!");
+        console.log("✅ Connected to local MongoDB! xyz");
     } else {
         if (!atlasDbUrl) throw new Error("ATLASDB_URL is not set in .env");
         await mongoose.connect(atlasDbUrl, {
